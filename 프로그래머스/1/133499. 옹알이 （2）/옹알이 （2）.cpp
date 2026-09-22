@@ -4,34 +4,36 @@
 
 using namespace std;
 
-int solution(vector<string> babbling)
-{
+int solution(vector<string> babbling) {
     int answer = 0;
-
     vector<string> pronouncing = { "aya", "ye", "woo", "ma" };
 
     for (auto str : babbling)
     {
-        for (int i = 0; i < 50; ++i)
-        {
-            for (int j = 0; j < 4; ++j)
-            {
-                size_t index = str.find(pronouncing[j]);
+        bool find = true;
 
-                if (index != string::npos)
+        while (find)
+        {
+            find = false;
+
+            for (int i = 0; i < pronouncing.size(); ++i)
+            {
+                if (auto r = ranges::search(str, pronouncing[i]))
                 {
-                    str = str.substr(0, index) +
-                          to_string(j) +
-                          str.substr(index + pronouncing[j].size(), str.size());
+                    find = true;
+
+                    size_t pos = r.begin() - str.begin();
+                    size_t len = ranges::distance(r);
+
+                    str = str.substr(0, pos) + to_string(i) + str.substr(pos + len, str.size());
                 }
             }
         }
 
-        if (all_of(str.begin(), str.end(), ::isdigit) &&
-            string::npos == str.find("00") &&
-            string::npos == str.find("11") &&
-            string::npos == str.find("22") &&
-            string::npos == str.find("33"))
+        if (ranges::any_of(str, [](char c) { return islower(c); }))
+            continue;
+
+        if (auto it = ranges::adjacent_find(str); it == str.end())
             answer++;
     }
 
