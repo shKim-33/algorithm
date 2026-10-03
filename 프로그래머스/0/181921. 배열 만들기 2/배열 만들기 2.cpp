@@ -6,22 +6,20 @@ using namespace std;
 vector<int> solution(int l, int r)
 {
     vector<int> answer, num = { 5 };
-    vector<string> stringNum = { "5" };
 
-    for (int i = 0; i < stringNum.size(); ++i)
+    for (int i = 0; i < num.size(); ++i)
     {
-        string s0 = stringNum[i] + "0";
-        string s5 = stringNum[i] + "5";
+        int s0 = num[i] * 10;
 
-        if (stoi(s0) > r)
+        if (s0 > r)
             break;
-        stringNum.push_back(s0);
-        num.push_back(stoi(s0));
+        num.push_back(s0);
 
-        if (stoi(s5) > r)
+        int s5 = s0 + 5;
+
+        if (s5 > r)
             break;
-        stringNum.push_back(s5);
-        num.push_back(stoi(s5));
+        num.push_back(s5);
     }
 
     for (int n : num)
