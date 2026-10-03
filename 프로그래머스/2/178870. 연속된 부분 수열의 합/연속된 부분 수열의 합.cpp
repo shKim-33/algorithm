@@ -1,26 +1,39 @@
-#include <limits>
 #include <vector>
 
 using namespace std;
 
-vector<int> solution(vector<int> sequence, int k) {
-    vector<int> answer = { 0, numeric_limits<int>::max() };
-    int sum = sequence[0], left = 0, right = 0;
+vector<int> solution(vector<int> sequence, int k)
+{
+    vector<int> answer = { 0, 0 };
+    int start = 0, end = 0, length = 1000000;
+    int sum = sequence[0];
 
-    while (!(right == static_cast<int>(sequence.size()) - 1 && sum < k))
+    if (sum == k)
     {
-        if (sum < k)
+        answer = { start, end };
+        return answer;
+    }
+
+    while (!(end >= static_cast<int>(sequence.size()) - 1 && sum < k))
+    {
+        if (sum == k)
         {
-            right++;
-            sum += sequence[right];
+            if (end - start < length)
+            {
+                length = end - start;
+                answer = { start, end };
+            }
+        }
+
+        if (sum <= k)
+        {
+            end++;
+            sum += sequence[end];
         }
         else
         {
-            if (sum == k && right - left < answer[1] - answer[0])
-                answer = { left, right };
-
-            sum -= sequence[left];
-            left++;
+            sum -= sequence[start];
+            start++;
         }
     }
 
