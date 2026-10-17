@@ -24,19 +24,8 @@ int solution(vector<string> want, vector<int> number, vector<string> discount)
                 itemCount[it - want.begin()]--;
         }
 
-        if (i >= 9)
-        {
-            bool canBuy = true;
-
-            for (int j = 0; j < number.size(); ++j)
-            {
-                if (itemCount[j] < number[j])
-                    canBuy = false;
-            }
-
-            if (canBuy)
-                answer++;
-        }
+        if (i >= 9 && itemCount == number)
+            answer++;
     }
 
     return answer;
